@@ -1,0 +1,53 @@
+Objetivo
+Crear una aplicación web con NextJS (page router), que permita buscar, listar usuarios de GitHub, marcarlos como favoritos y mostrar detalles de un usuario seleccionado utilizando la API de GitHub Users.
+Requisitos
+Home
+
+Obtén una lista inicial de usuarios de la API de GitHub Users.
+
+Mostrar los usuarios en una lista con sus nombres y avatares.
+
+Implementar un buscador que permita filtrar los usuarios haciendo peticiones a la API por nombre.
+
+Cada usuario debe tener un enlace a una página de detalle.
+
+Poder poner como favorito los usuarios (sin necesidad de persistir)
+
+Página de Detalle del Usuario
+
+Mostrar los detalles de un usuario específico cuando se hace clic en él desde la página de listado (nombre, avatar, bio, repositorios, etc.).
+
+Mostrar si es favorito y permitir agregar o eliminarlo
+
+Estilo
+
+Podes usar CSS puro, styled-components o una librería de componentes como Material-UI para el estilo.
+
+
+API
+
+
+https://api.github.com/users
+
+https://api.github.com/search/users?q={term}
+
+https://api.github.com/users/{username}
+
+
+
+------
+
+Desarrollo:
+
+UI a usar
+Avatar https://mui.com/material-ui/react-avatar/
+Badget https://mui.com/material-ui/react-badge/
+Lists  https://mui.com/material-ui/react-list/
+Divider https://mui.com/material-ui/react-divider/
+Skeleton https://mui.com/material-ui/react-skeleton/
+Card https://mui.com/material-ui/react-card/
+Paper (sahdow & buttons) https://mui.com/material-ui/react-paper/
+ImageList https://mui.com/material-ui/react-image-list/
+Masonry https://mui.com/material-ui/react-masonry/
+
+
