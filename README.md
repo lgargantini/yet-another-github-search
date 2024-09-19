@@ -1,40 +1,66 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GitHub User Explorer
 
-## Getting Started
+![React Badge](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Next.js Badge](https://img.shields.io/badge/next%20js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![MUI Badge](https://img.shields.io/badge/Material%20UI-007FFF?style=for-the-badge&logo=mui&logoColor=white)
 
-First, run the development server:
+GitHub User Explorer es una aplicación web desarrollada con NextJS que permite a los usuarios buscar y explorar perfiles de GitHub de manera eficiente. Con esta herramienta, puedes buscar usuarios por nombre, ver una lista de usuarios con sus avatares, marcar usuarios como favoritos y acceder a detalles completos de cada perfil, incluyendo su biografía y repositorios. Todo esto se logra utilizando la API de GitHub Users, proporcionando una experiencia de usuario fluida y rápida.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Estilo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Se usa CSS Modules y [Material-UI](https://mui.com/) para los componentes.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Librerías Utilizadas
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- [**React**](https://reactjs.org/): Para la construcción de la interfaz de usuario.
+- [**Next.js**](https://nextjs.org/): Para el enrutamiento y la estructura del proyecto.
+- [**Material-UI (MUI)**](https://mui.com/): Para componentes de interfaz de usuario como Avatar, Badge, List, Divider, Skeleton, Card, Paper, ImageList y Masonry.
+- [**Emotion**](https://emotion.sh/docs/introduction): Para el manejo de estilos en componentes.
+- [**Fontsource**](https://fontsource.org/): Para la fuente Roboto.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## API
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Se integra la API de Github para hacer las busquedas de usuarios y los detalles
 
-## Learn More
+- [Lista de usuarios](https://api.github.com/users)
+- [Buscar usuarios](https://api.github.com/search/users?q={term})
+- [Detalles de usuario](https://api.github.com/users/{username})
 
-To learn more about Next.js, take a look at the following resources:
+### UI a usar
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Avatar](https://mui.com/material-ui/react-avatar/)
+- [Badge](https://mui.com/material-ui/react-badge/)
+- [Lists](https://mui.com/material-ui/react-list/)
+- [Divider](https://mui.com/material-ui/react-divider/)
+- [Skeleton](https://mui.com/material-ui/react-skeleton/)
+- [Card](https://mui.com/material-ui/react-card/)
+- [Paper (shadow & buttons)](https://mui.com/material-ui/react-paper/)
+- [ImageList](https://mui.com/material-ui/react-image-list/)
+- [Masonry](https://mui.com/material-ui/react-masonry/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Instalación
 
-## Deploy on Vercel
+1. Clona el repositorio:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   ```
+2. Navega al directorio del proyecto:
+   ```bash
+   cd github-user-explorer
+   ```
+3. Instala las dependencias:
+   ```bash
+   npm install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Uso
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Inicia la aplicación:
+   ```bash
+   npm run dev
+   ```
+2. Abre tu navegador y navega a `http://localhost:3000`.
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT.
