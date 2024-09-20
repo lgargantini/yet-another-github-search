@@ -1,79 +1,84 @@
-import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid2';
-
+import { 
+  Grid2 as Grid,
+  Stack,
+  Typography,
+  TextField,
+  Card,
+  CardContent
+} from '@mui/material';
+import UserCard from '@/components/UserCard';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '@/styles/terminal-glow-theme';
 
 export default function Home() {
   return (
-    <>
-      <Head>
-        <title>yet another github user search</title>
-        <meta name="description" content="yet another github user search" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div
-        className={`${styles.page}`}
-      >
-        <main>
-          <h1>/// yet another github user search ///</h1>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
-          <Grid
-            container
-            sx={{
-              '--Grid-borderWidth': '2px',
-              borderTop: 'var(--Grid-borderWidth) solid',
-              borderLeft: 'var(--Grid-borderWidth) solid',
-              borderColor: 'divider',
-              '& > div': {
-                borderRight: 'var(--Grid-borderWidth) solid',
-                borderBottom: 'var(--Grid-borderWidth) solid',
-                borderColor: 'divider',
-              },
-            }}
+    <ThemeProvider theme={theme}>
+      <Typography variant="h3" component="h1" sx={
+        {
+          textAlign: 'center',
+          marginTop: '1rem',
+          marginBottom: '1rem',
+        }
+      }>
+      /// yet another github user search ///
+      </Typography>
+      
+      {/* Contenedor */}
+      <Grid container spacing={4} sx={
+        {
+          marginTop: '1rem',
+          marginBottom: '1rem',
+        }
+      }>
+
+        {/* Buscador */}
+        <Grid size={12} sx={
+          {
+            textAlign: 'center',
+            padding: '1rem',
+          }
+        }>
+          <Typography component="label">Search for a user</Typography>
+          <TextField
+            id="standard-search"
+            label="Search field"
+            type="search"
+            variant="standard"
+          />
+        </Grid>
+
+        {/* Cards de usuarios */}
+        <Grid container size={{xs: 12, sm: "grow"}} rowSpacing={1}>
+          {['size=4', 'size=4', 'size=4'].map((text, index) => (
+            <UserCard key={`card-${index}`} avatarSrc={`https://avatar.iran.liara.run/public?u=${Date.now}`} title={text} subtitle={text} />
+          ))}
+        </Grid>
+
+        {/* Favoritos*/}
+        <Grid container  rowSpacing={4}>
+          <Stack
+            direction="column"
           >
-            {[...Array(6)].map((_, index) => (
-              <Grid
-                key={index}
-                minHeight={160}
-                size={{
-                  xs: 12,
-                  sm: 6,
-                  md: 4,
-                  lg: 3,
-                }}
-              />
+            {['size=4', 'size=4', 'size=4'].map((text, index) => (
+              <Grid key={`card-${index}`} size={{ xs: 12, sm: 4, md: 4 }} sx={{
+                textAlign: 'center',
+                padding: '1rem',
+                border: '1px solid #0ef143',
+                borderRadius: '5px',
+                '&:hover': {
+                  boxShadow: '0 4px 4px #0ef143',
+                },
+              }}>
+                {text}
+              </Grid>
             ))}
-          </Grid>
-        </Box>
-          
-          <p>Search for a user</p>
-          <input type="text" />
-          <button>Search</button>
-
-          <p>Results</p>
-          <ul>
-            <li>card user 1</li>
-            <li>card user 2</li>
-            <li>card user 3</li>
-          </ul>
-
-        </main>
-        
-        <aside>
-          Favoritos
-          <ul>
-            <li>user 1</li>
-            <li>user 2</li>
-            <li>user 3</li>
-          </ul>
-        </aside>
-        <footer>
-          Credenciales
-        </footer>
-      </div>
-    </>
+          </Stack>
+        </Grid>
+      </Grid>
+      
+      <footer>
+        Credenciales
+      </footer>  
+    </ThemeProvider>
   );
 }
