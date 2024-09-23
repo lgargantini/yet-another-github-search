@@ -1,84 +1,116 @@
+import Head from 'next/head';
 import { 
+  Container,
   Grid2 as Grid,
-  Stack,
   Typography,
-  TextField,
-  Card,
-  CardContent
 } from '@mui/material';
-import UserCard from '@/components/UserCard';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '@/styles/terminal-glow-theme';
+import { UserCard, UserCardProps } from '@/components/UserCard';
+import { useTheme } from '@mui/material';
+
+import { SearchBar } from '@/components/SearchBar';
+import Header from '@/components/Header';
+
+const userCardData: UserCardProps[] = [
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/1',
+        title: 'John Doe',
+        subtitle: 'Software Engineer',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/2',
+        title: 'Jane Smith',
+        subtitle: 'Product Manager',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/3',
+        title: 'Alice Johnson',
+        subtitle: 'UX Designer',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/4',
+        title: 'Bob Brown',
+        subtitle: 'DevOps Engineer',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/5',
+        title: 'Charlie Davis',
+        subtitle: 'Data Scientist',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/6',
+        title: 'Diana Evans',
+        subtitle: 'Frontend Developer',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/7',
+        title: 'Ethan Harris',
+        subtitle: 'Backend Developer',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/8',
+        title: 'Fiona Green',
+        subtitle: 'QA Engineer',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/9',
+        title: 'George King',
+        subtitle: 'Project Manager',
+    },
+    {
+        avatarSrc: 'https://avatar.iran.liara.run/public/10',
+        title: 'Hannah Lee',
+        subtitle: 'Business Analyst',
+    },
+];
 
 export default function Home() {
+  const theme = useTheme();
   return (
-    <ThemeProvider theme={theme}>
-      <Typography variant="h3" component="h1" sx={
-        {
-          textAlign: 'center',
-          marginTop: '1rem',
-          marginBottom: '1rem',
-        }
-      }>
-      /// yet another github user search ///
-      </Typography>
+    <>
+      <Head>
+        <title>yet another github user search</title>
+        <meta name="description" content="yet another github user search" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
       
-      {/* Contenedor */}
-      <Grid container spacing={4} sx={
-        {
-          marginTop: '1rem',
-          marginBottom: '1rem',
-        }
-      }>
-
-        {/* Buscador */}
-        <Grid size={12} sx={
-          {
-            textAlign: 'center',
-            padding: '1rem',
-          }
-        }>
-          <Typography component="label">Search for a user</Typography>
-          <TextField
-            id="standard-search"
-            label="Search field"
-            type="search"
-            variant="standard"
-          />
-        </Grid>
-
-        {/* Cards de usuarios */}
-        <Grid container size={{xs: 12, sm: "grow"}} rowSpacing={1}>
-          {['size=4', 'size=4', 'size=4'].map((text, index) => (
-            <UserCard key={`card-${index}`} avatarSrc={`https://avatar.iran.liara.run/public?u=${Date.now}`} title={text} subtitle={text} />
-          ))}
-        </Grid>
-
-        {/* Favoritos*/}
-        <Grid container  rowSpacing={4}>
-          <Stack
-            direction="column"
-          >
-            {['size=4', 'size=4', 'size=4'].map((text, index) => (
-              <Grid key={`card-${index}`} size={{ xs: 12, sm: 4, md: 4 }} sx={{
-                textAlign: 'center',
+        <Container sx={{
+          backgroundColor: theme.palette.background.default,
+        }}>
+          <Header />
+        
+          {/* Contenedor */}
+          <Grid container spacing={4} size={12} sx={
+              {
                 padding: '1rem',
-                border: '1px solid #0ef143',
-                borderRadius: '5px',
-                '&:hover': {
-                  boxShadow: '0 4px 4px #0ef143',
-                },
-              }}>
-                {text}
-              </Grid>
-            ))}
-          </Stack>
-        </Grid>
-      </Grid>
-      
-      <footer>
-        Credenciales
-      </footer>  
-    </ThemeProvider>
+              }
+            }>
+
+            {/* Buscador */}
+            <Grid size={12} sx={
+              {
+                textAlign: 'center',
+              padding: '1rem',
+              }
+            }>
+              <SearchBar />
+            </Grid>
+
+            {/* Cards de usuarios */}
+            <Grid container rowSpacing={1}>
+              {userCardData.map((user, index) => (
+                <Grid>
+                  <UserCard key={`card-${index}`} avatarSrc={`${user.avatarSrc}`} title={user.title} subtitle={user.subtitle} />
+                </Grid> 
+              ))}
+            </Grid>
+
+            <Grid size={12}>
+              <footer>
+                Santiago Barchetta - MIT License - 2024
+              </footer>  
+            </Grid>
+          </Grid>
+          </Container>
+    </>
   );
 }

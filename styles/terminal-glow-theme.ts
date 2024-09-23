@@ -1,23 +1,8 @@
-// import { ThemeOptions } from '@mui/material/styles';
-
-// export const themeOptions: ThemeOptions = {
-//   palette: {
-//     mode: 'dark',
-//     primary: {
-//       main: '#0ef143',
-//     },
-//     secondary: {
-//       main: '#f10ebc',
-//     },
-//   },
-// };
-
 import { createTheme } from '@mui/material/styles';
 
 // Tema oscuro por defecto con estilo retro futurista
 const theme = createTheme({
   palette: {
-    mode: 'dark', // Tema por defecto
     primary: {
       main: '#10f144', // Verde vibrante para botones principales
       light: '#42f56a', // Verde claro para hover
@@ -31,12 +16,12 @@ const theme = createTheme({
       contrastText: '#fff', // Texto blanco en botones secundarios
     },
     background: {
-      default: '#0c0c04', // Fondo negro profundo
-      paper: '#151515', // Fondo para tarjetas o superficies
+      default: '#e0e0e0', // Fondo claro para tarjetas
+      paper: '#9c9da4', // Fondo gris suave
     },
     text: {
-      primary: '#10f144', // Texto principal en verde
-      secondary: '#fff', // Títulos y subtítulos en blanco
+      primary: '#0c0c04', // Texto principal en negro
+      secondary: '#10f144', // Acentos en verde
       disabled: '#9c9da4', // Texto deshabilitado en gris suave
     },
     error: {
@@ -52,51 +37,18 @@ const theme = createTheme({
       main: '#66bb6a', // Verde suave para éxito
     },
   },
-  typography: {
-    fontFamily: 'Open Sans',
-    h1: {
-      fontFamily: 'Ubuntu Mono',
-    },
-    h2: {
-      fontFamily: 'Ubuntu Mono',
-    },
-    h3: {
-      fontFamily: 'Ubuntu Mono',
-    },
-    h4: {
-      fontFamily: 'Ubuntu Mono',
-    },
-    h6: {
-      fontFamily: 'Ubuntu Mono',
-    },
-    h5: {
-      fontFamily: 'Ubuntu Mono',
-    },
-    subtitle1: {
-      fontFamily: 'Ubuntu Mono',
-    },
-    subtitle2: {
-      fontFamily: 'Ubuntu Mono',
-    },
-    button: {
-      fontFamily: 'Ubuntu Mono',
-      fontWeight: 900,
-    },
-    overline: {
-      fontFamily: 'Ubuntu Mono',
-    }
-  },
   // Tema claro alternativo
   colorSchemes: {
-    light: {
+    dark: {
       palette: {
-        background: {
-          default: '#9c9da4', // Fondo gris suave
-          paper: '#e0e0e0', // Fondo claro para tarjetas
+        background: {    
+          default: '#0c0c04', // Fondo negro profundo
+          paper: '#151515', // Fondo para tarjetas o superficies
         },
         text: {
-          primary: '#0c0c04', // Texto principal en negro
-          secondary: '#10f144', // Acentos en verde
+          primary: '#10f144', // Texto principal en verde
+          secondary: '#fff', // Títulos y subtítulos en blanco
+          disabled: '#9c9da4', // Texto deshabilitado en gris suave
         },
         primary: {
           main: '#10f144', // Verde para botones principales

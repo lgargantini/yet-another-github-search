@@ -1,13 +1,12 @@
-import { CssBaseline } from "@mui/material";
 import { Html, Head, Main, NextScript } from "next/document";
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '@/styles/terminal-glow-theme';
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>yet another github user search</title>
-        <meta name="description" content="yet another github user search" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"
@@ -15,8 +14,10 @@ export default function Document() {
         />
       </Head>
       <body>
-        <CssBaseline />
-        <Main />
+        <CssBaseline enableColorScheme={true} />
+        <ThemeProvider theme={theme}>
+          <Main />
+        </ThemeProvider>
         <NextScript />
       </body>
     </Html>
