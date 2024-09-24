@@ -11,13 +11,14 @@ export const UserCard = ({ avatarSrc, title, subtitle }: UserCardProps) => {
   const theme = useTheme();
 
   return (
-    <Card sx={{ display: 'flex' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <CardContent sx={{backgroundColor:theme.palette.background.paper}}>
-          <Avatar alt="User Avatar" src={avatarSrc} sx={{
+    <Card sx={{backgroundColor:theme.palette.background.paper,  }} >
+      <Box sx={{ display:'flex', flexDirection: 'column', alignItems:'center', alignContent:'center' ,backgroundColor: theme.palette.background.paper, alignSelf: 'stretch' }}>
+        <CardContent>
+          <Avatar alt="User Avatar" src={avatarSrc} variant='square' sx={{
             width: theme.spacing(10),
             height: theme.spacing(10),
             margin: 'auto',
+            alignSelf: 'center',
           }} />
           <Typography component="div" variant="h5">
             {title}
@@ -30,9 +31,6 @@ export const UserCard = ({ avatarSrc, title, subtitle }: UserCardProps) => {
             {subtitle}
           </Typography>
         </CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-          
-        </Box>
       </Box>
     </Card>
   );
