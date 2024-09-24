@@ -13,13 +13,11 @@ export default function Document() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
-      <body>
-        <CssBaseline enableColorScheme={true} />
-        <ThemeProvider theme={theme}>
-          <Main />
-        </ThemeProvider>
-        <NextScript />
-      </body>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <Main />
+      </ThemeProvider>
+      <NextScript />
     </Html>
   );
 }

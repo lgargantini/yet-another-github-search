@@ -38,29 +38,29 @@ const theme = createTheme({
     },
   },
   // Tema claro alternativo
-  colorSchemes: {
-    dark: {
-      palette: {
-        background: {    
-          default: '#0c0c04', // Fondo negro profundo
-          paper: '#151515', // Fondo para tarjetas o superficies
-        },
-        text: {
-          primary: '#10f144', // Texto principal en verde
-          secondary: '#fff', // Títulos y subtítulos en blanco
-          disabled: '#9c9da4', // Texto deshabilitado en gris suave
-        },
-        primary: {
-          main: '#10f144', // Verde para botones principales
-          contrastText: '#fff', // Texto blanco
-        },
-        secondary: {
-          main: '#f10ebc', // Rosa para botones secundarios
-          contrastText: '#fff', // Texto blanco
-        },
-      },
-    },
-  },
+  // colorSchemes: {
+  //   dark: {
+  //     palette: {
+  //       background: {    
+  //         default: '#0c0c04', // Fondo negro profundo
+  //         paper: '#151515', // Fondo para tarjetas o superficies
+  //       },
+  //       text: {
+  //         primary: '#10f144', // Texto principal en verde
+  //         secondary: '#fff', // Títulos y subtítulos en blanco
+  //         disabled: '#9c9da4', // Texto deshabilitado en gris suave
+  //       },
+  //       primary: {
+  //         main: '#10f144', // Verde para botones principales
+  //         contrastText: '#fff', // Texto blanco
+  //       },
+  //       secondary: {
+  //         main: '#f10ebc', // Rosa para botones secundarios
+  //         contrastText: '#fff', // Texto blanco
+  //       },
+  //     },
+  //   },
+  // },
 });
 
 export default theme;

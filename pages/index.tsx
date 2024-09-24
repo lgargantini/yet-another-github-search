@@ -1,7 +1,9 @@
 import Head from 'next/head';
 import { 
+  Avatar,
   Container,
-  Grid2 as Grid
+  Grid2 as Grid,
+  Typography
 } from '@mui/material';
 import { UserCard, UserCardProps } from '@/components/UserCard';
 import { useTheme } from '@mui/material';
@@ -90,9 +92,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       
-        <Container sx={{
-          backgroundColor: theme.palette.background.default,
-        }}>
+        <Container maxWidth="lg">
           <Header />
         
           {/* Contenedor */}
@@ -105,13 +105,30 @@ export default function Home() {
             </Grid>
 
             {/* Cards de usuarios */}
-            <Grid container rowSpacing={1}>
-              {dataFiltered.map((user, index) => (
-                <Grid key={`grid-${index}`} size={{ md: 3, sm: 6, xs: 12 }}>
-                  
-                  <UserCard key={`card-${index}`} avatarSrc={`${user.avatarSrc}`} title={user.title} subtitle={user.subtitle}/>
-                </Grid> 
-              ))}
+          <Grid container rowSpacing={1} size={12}>
+            {
+              dataFiltered.length === 0 && ( 
+                <Grid size={12} sx={{ textAlign: 'center', padding: '1rem', display: 'flex', flexDirection:'column', alignItems:'center'
+                }}>
+                  <Avatar alt="User Avatar" src="https://api.dicebear.com/9.x/pixel-art/svg?seed=sa&eyes=variant02,variant03,variant04,variant05,variant06,variant11,variant09,variant10&mouth=sad10,sad09,sad08,sad07,sad06,sad05,sad04,sad03,sad02,sad01" variant='square' sx={{
+                    width: theme.spacing(10),
+                    height: theme.spacing(10),
+                  }} />
+                  <Typography variant="h5" component="h2" sx={{
+                    padding: '1rem'
+                  }}>No se encontró ningún usuario</Typography>
+                </Grid>
+              )
+              
+            }
+            {
+              dataFiltered.length > 0 && 
+                dataFiltered.map((user, index) => (
+                  <Grid key={`grid-${index}`} size={{ md: 3, sm: 6, xs: 12 }}>  
+                    <UserCard key={`card-${index}`} avatarSrc={`${user.avatarSrc}`} title={user.title} subtitle={user.subtitle}/>
+                  </Grid> 
+                ))
+            }
             </Grid>
 
             <Grid size={12}>
