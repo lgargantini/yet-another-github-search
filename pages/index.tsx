@@ -7,8 +7,6 @@ import {
 } from '@mui/material';
 import { UserCard, UserCardProps } from '@/components/UserCard';
 import { useTheme } from '@mui/material';
-
-// import { SearchBar } from '@/components/SearchBar2';
 import { SearchBar } from '@/components/SearchBar';
 import Header from '@/components/Header';
 import { useState } from 'react';
