@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from "react";
 
 interface SearchContextProps {
   searchQuery: string;
@@ -20,7 +20,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
 export const useSearch = (): SearchContextProps => {
   const context = useContext(SearchContext);
   if (!context) {
-    throw new Error('SearchProvider is not mounted');
+    throw new Error("SearchProvider is not mounted");
   }
   return context;
 };
