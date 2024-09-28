@@ -9,8 +9,6 @@ export interface UserCardProps {
 
 export const UserCard = ({ avatarSrc, title, subtitle }: UserCardProps) => {
   const theme = useTheme();
-
-  console.log("UserCard", avatarSrc, title, subtitle);
   return (
     <Card sx={{}}>
       <Box sx={{}}>
@@ -25,7 +23,7 @@ export const UserCard = ({ avatarSrc, title, subtitle }: UserCardProps) => {
           <Avatar
             alt="User Avatar"
             src={avatarSrc}
-            variant="square"
+            variant="rounded"
             sx={{
               width: theme.spacing(10),
               height: theme.spacing(10),

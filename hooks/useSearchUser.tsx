@@ -1,7 +1,7 @@
 import { Octokit } from "octokit";
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 
-interface GitHubUser {
+export interface GitHubUser {
   login: string;
   id: number;
   avatar_url: string;
@@ -10,41 +10,45 @@ interface GitHubUser {
 
 const octokit = new Octokit({});
 
-const useSearchUser = (
+export const useSearchUser = (
   q: string,
   since: number = 0,
   perPage: number = 30,
   page: number = 1,
 ) => {
   const [users, setUsers] = useState<GitHubUser[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
+  const searchUsers = useCallback(
+    async (q: string) => {
       setLoading(true);
       setError(null);
 
       try {
-        const response = await octokit.rest.search.users({ q });
+        const response = await octokit.rest.search.users({
+          q,
+          since,
+          per_page: perPage,
+          page,
+        });
+
+        console.log("users", response.data.items);
 
         if (response.status !== 200) {
           throw new Error("Error fetching users");
         }
 
-        const data: GitHubUser[] = await response.data.items;
+        const data: GitHubUser[] = response.data.items;
         setUsers(data);
       } catch (e: any) {
         setError(e.message);
       } finally {
         setLoading(false);
       }
-    };
+    },
+    [q, since, perPage, page],
+  );
 
-    fetchUsers();
-  }, [since, perPage]);
-
-  return { users, loading, error };
+  return { users, loading, error, searchUsers };
 };
-
-export default useSearchUser;

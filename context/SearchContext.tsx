@@ -1,17 +1,20 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 
 interface SearchContextProps {
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
+  query: string;
+  setQuery: (query: string) => void;
+  result: any[];
+  setResult: (result: any[]) => void;
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined);
 
 export const SearchProvider = ({ children }: { children: ReactNode }) => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [query, setQuery] = useState<string>("");
+  const [result, setResult] = useState<any>([]);
 
   return (
-    <SearchContext.Provider value={{ searchQuery, setSearchQuery }}>
+    <SearchContext.Provider value={{ query, setQuery, result, setResult }}>
       {children}
     </SearchContext.Provider>
   );
@@ -22,5 +25,8 @@ export const useSearch = (): SearchContextProps => {
   if (!context) {
     throw new Error("SearchProvider is not mounted");
   }
+
+  console.log("context", context);
+
   return context;
 };

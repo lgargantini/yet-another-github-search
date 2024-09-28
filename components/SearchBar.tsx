@@ -1,27 +1,23 @@
-import { TextField } from "@mui/material";
+import { Input } from "@mui/material";
 
 interface SearchBarProps {
-  setSearchQuery: (query: string) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChangeInput: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
 }
 
-const onChangeTextField = (
-  e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-  setSearchQuery: (query: string) => void,
-) => {
-  setSearchQuery(e.target.value);
-};
-
-export const SearchBar = ({ setSearchQuery }: SearchBarProps) => (
-  <form action="">
-    <TextField
+export const SearchBar = ({ onSubmit, onChangeInput }: SearchBarProps) => (
+  <form action="" onSubmit={(e) => onSubmit(e)}>
+    <Input
       id="standard-search"
-      onChange={(e) => onChangeTextField(e, setSearchQuery)}
-      variant="standard"
+      onChange={(e) => onChangeInput(e)}
+      type="search"
       placeholder="Busca un usuario por su nombre o @..."
       sx={{
         textAlign: "center",
         width: "100%",
-        fontSize: "3.5rem",
+        fontSize: "2.5rem",
       }}
     />
   </form>
