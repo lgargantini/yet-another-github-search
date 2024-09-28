@@ -15,10 +15,8 @@ export default function Document() {
         />
       </Head>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <SearchProvider>
+          <CssBaseline />
           <Main />
-        </SearchProvider>
       </ThemeProvider>
       <NextScript />
     </Html>

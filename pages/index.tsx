@@ -9,7 +9,9 @@ import { UserCard, UserCardProps } from '@/components/UserCard';
 import { useTheme } from '@mui/material';
 import { SearchBar } from '@/components/SearchBar';
 import Header from '@/components/Header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSearch as useSearchContext} from '@/context/SearchContext';
+
 
 const baseUrl = 'https://api.dicebear.com/9.x/pixel-art/svg';
 const queryParams = 'backgroundType=solid,gradientLinear&randomizeIds=true&accessoriesColor=a9a9a9,d3d3d3,daa520,fafad2,ffd700,transparent&accessoriesProbability=30&beardProbability=20&clothingColor=00b159,03396c,ffc425,428bca,d11141,ae0001,44c585&eyesColor=588387,5b7c8b,647b90,697b94,76778b,876658,transparent&hairColor=009bbd,28150a,603015,611c17,612616,91cb15,a78961,bd1700,cab188&skinColor=8d5524,b68655,e0b687,f5cfa0';
@@ -78,9 +80,13 @@ const filterUserData = (query: string, data: UserCardProps[]): UserCardProps[] =
 
 export default function Home() {
   const theme = useTheme();
-  const [searchQuery, setSearchQuery] = useState("");
+  const { searchQuery, setSearchQuery } = useSearchContext();
+  const [searchResult, setSearchResult] = useState(userCardData);
+  const [dataFiltered, setDataFiltered] = useState(filterUserData(searchQuery, searchResult));
   
-  const dataFiltered = filterUserData(searchQuery, userCardData);
+  useEffect(() => {
+    setDataFiltered(filterUserData(searchQuery, searchResult));
+  }, [searchQuery]);
 
   return (
     <>
@@ -98,35 +104,32 @@ export default function Home() {
 
             {/* Buscador */}
             <Grid size={12} sx={{ textAlign: 'center', padding: '1rem' }}>
-            {/* <SearchBar /> */}
               <SearchBar setSearchQuery={setSearchQuery} />
             </Grid>
 
             {/* Cards de usuarios */}
-          <Grid container rowSpacing={1} size={12}>
-            {
-              dataFiltered.length === 0 && ( 
-                <Grid size={12} sx={{ textAlign: 'center', padding: '1rem', display: 'flex', flexDirection:'column', alignItems:'center'
-                }}>
-                  <Avatar alt="User Avatar" src="https://api.dicebear.com/9.x/pixel-art/svg?seed=sa&eyes=variant02,variant03,variant04,variant05,variant06,variant11,variant09,variant10&mouth=sad10,sad09,sad08,sad07,sad06,sad05,sad04,sad03,sad02,sad01" variant='square' sx={{
-                    width: theme.spacing(10),
-                    height: theme.spacing(10),
-                  }} />
-                  <Typography variant="h5" component="h2" sx={{
-                    padding: '1rem'
-                  }}>No se encontró ningún usuario</Typography>
-                </Grid>
-              )
-              
-            }
-            {
-              dataFiltered.length > 0 && 
-                dataFiltered.map((user, index) => (
+            <Grid container rowSpacing={1} size={12}>
+              {
+                dataFiltered.length === 0 && ( 
+                  <Grid size={12} sx={{ textAlign: 'center', padding: '1rem', display: 'flex', flexDirection:'column', alignItems:'center'
+                  }}>
+                    <Avatar alt="User Avatar" src="https://api.dicebear.com/9.x/pixel-art/svg?seed=sa&eyes=variant02,variant03,variant04,variant05,variant06,variant11,variant09,variant10&mouth=sad10,sad09,sad08,sad07,sad06,sad05,sad04,sad03,sad02,sad01" variant='square' sx={{
+                      width: theme.spacing(10),
+                      height: theme.spacing(10),
+                    }} />
+                    <Typography variant="h5" component="h2" sx={{
+                      padding: '1rem'
+                    }}>No se encontró ningún usuario</Typography>
+                  </Grid>
+                )
+              }
+              {
+                dataFiltered.length > 0 && dataFiltered.map((user, index) => (
                   <Grid key={`grid-${index}`} size={{ md: 3, sm: 6, xs: 12 }}>  
                     <UserCard key={`card-${index}`} avatarSrc={`${user.avatarSrc}`} title={user.title} subtitle={user.subtitle}/>
                   </Grid> 
                 ))
-            }
+              }
             </Grid>
 
             <Grid size={12}>
@@ -135,7 +138,7 @@ export default function Home() {
               </footer>  
             </Grid>
           </Grid>
-          </Container>
+        </Container>
     </>
   );
 }
