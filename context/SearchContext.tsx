@@ -20,7 +20,7 @@ export const SearchProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useSearch = (): SearchContextProps => {
+export const useSearchContext = (): SearchContextProps => {
   const context = useContext(SearchContext);
   if (!context) {
     throw new Error("SearchProvider is not mounted");

@@ -1,18 +1,12 @@
+import React, { useEffect } from "react";
 import Head from "next/head";
-import {
-  Avatar,
-  CircularProgress,
-  Container,
-  Grid2 as Grid,
-  Typography,
-} from "@mui/material";
-import { UserCard, UserCardProps } from "@/components/UserCard";
+import { CircularProgress, Container, Grid2 as Grid } from "@mui/material";
 import { useTheme } from "@mui/material";
-import { SearchBar } from "@/components/SearchBar";
 import Header from "@/components/Header";
-import { useSearch as useSearchContext } from "@/context/SearchContext";
-import { useSearchUser } from "@/hooks/useSearchUser";
-import { useEffect } from "react";
+import { SearchBar } from "@/components/SearchBar";
+import { UserCard } from "@/components/UserCard";
+import { useSearchContext } from "@/context/SearchContext";
+import { useSearchUser } from "@/hooks/useSearchUsers";
 
 export default function Home() {
   const theme = useTheme();
@@ -58,7 +52,7 @@ export default function Home() {
 
           {/* Cards de usuarios */}
           <Grid container rowSpacing={1} size={12}>
-            {/* {result.length === 0 && (
+            {/* {result.length === 0 && !loading && (
               <Grid
                 size={12}
                 sx={{
@@ -89,6 +83,7 @@ export default function Home() {
                 </Typography>
               </Grid>
             )} */}
+
             {loading && <CircularProgress />}
             {result.length > 0 &&
               result.map((user, index) => (
@@ -96,8 +91,7 @@ export default function Home() {
                   <UserCard
                     key={`card-${index}`}
                     avatarSrc={`${user.avatar_url}`}
-                    title={user.login}
-                    subtitle={user.subtitle}
+                    login={user.login}
                   />
                 </Grid>
               ))}

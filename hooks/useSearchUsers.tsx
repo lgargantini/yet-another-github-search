@@ -1,12 +1,6 @@
 import { Octokit } from "octokit";
 import { useState, useCallback } from "react";
-
-export interface GitHubUser {
-  login: string;
-  id: number;
-  avatar_url: string;
-  html_url: string;
-}
+import { GitHubUser } from "./utils/github";
 
 const octokit = new Octokit({});
 
