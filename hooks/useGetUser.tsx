@@ -35,5 +35,5 @@ export const useGetUser = (username: string) => {
     [username],
   );
 
-  return { user, loading, error, getUser };
+  return { user, getUser, loading, error };
 };

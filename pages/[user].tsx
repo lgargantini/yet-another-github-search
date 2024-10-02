@@ -5,24 +5,36 @@ import {
   Container,
   Grid2 as Grid,
   Typography,
-  Avatar,
-  Box,
-  Link,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useTheme } from "@mui/material";
 import Header from "@/components/Header";
 import { ProfileResume } from "@/components/ProfileResume";
 import { useGetUser } from "@/hooks/useGetUser";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
+import { RepositoriesList } from "@/components/RepositoriesList";
+import { useGetRepositories } from "@/hooks/useGetRepositories";
+import { FollowerList } from "@/components/FollowerList";
+import { useGetFollowers } from "@/hooks/useGetFollowers";
 
 export default function UserProfile() {
-  const theme = useTheme();
   const router = useRouter();
   const { user, loading, error, getUser } = useGetUser(
     router.query.user as string,
   );
+
+  const {
+    repositories,
+    loading: loadingRepos,
+    error: errorRepos,
+    getRepositories,
+  } = useGetRepositories(null);
+
+  const {
+    followers,
+    loading: loadingFollowers,
+    error: errorFollowers,
+    getFollowers,
+  } = useGetFollowers(null);
 
   useEffect(() => {
     if (router.query.user) {
@@ -30,10 +42,17 @@ export default function UserProfile() {
     }
   }, [router.query.user]);
 
+  useEffect(() => {
+    if (user) {
+      getRepositories(user.login);
+      getFollowers(user.login);
+    }
+  }, [user]);
+
   return (
     <>
       <Head>
-        <title>Perfil de usuario - {user?.login}</title>
+        <title>{`yet another github user search - ${user?.login}`}</title>
         <meta
           name="description"
           content={`Perfil de usuario de ${user?.login}`}
@@ -53,7 +72,24 @@ export default function UserProfile() {
             </>
           )}
         </Grid>
-
+        <Grid container size={12}>
+          <Grid size={{ sm: 6, xs: 12 }}>
+            <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
+              Repositorios
+            </Typography>
+            <Grid container size={12} spacing={2}>
+              <RepositoriesList repositories={repositories} />
+            </Grid>
+          </Grid>
+          <Grid size={{ sm: 6, xs: 12 }}>
+            <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
+              Seguidores
+            </Typography>
+            <Grid container size={12} spacing={2}>
+              <FollowerList followers={followers} />
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid
           size={12}
           sx={{

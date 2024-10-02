@@ -23,6 +23,23 @@ export interface GitHubUser {
   following: number;
 }
 
+export interface Repository {
+  id: number;
+  full_name: string;
+  owner: GitHubUser;
+  html_url: string;
+  description: string | null;
+  url: string;
+  language: string | null;
+  forks_count: number;
+  stargazers_count: number;
+  watchers_count: number;
+  size: number;
+  pushed_at: string | null;
+  forks: number;
+  watchers: number;
+}
+
 export const searchUsers = async (query: string) => {
   try {
     const response = await octokit.rest.search.users({ q: query });
@@ -49,11 +66,15 @@ export const getUser = async (username: string) => {
   }
 }
 
-
-export const getRepostories = async (username: string) => { 
+export const getRepositories = async (username: string): Promise<Repository[]> => { 
   try {
-    const response = await octokit.rest.repos.listForUser({ username });
-    return response.data;
+    const response = await octokit.rest.repos.listForUser({
+      username,
+      sort: "pushed",
+      direction: "desc",
+      per_page: 10,
+    });
+    return response.data as unknown as Repository[];
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
@@ -62,5 +83,18 @@ export const getRepostories = async (username: string) => {
     }
   }
 }
-
-export const getFollowers = async (username: string) => {}
+export const getFollowers = async (username: string): Promise<GitHubUser[]> => {
+  try {
+    const response = await octokit.rest.users.listFollowersForUser({
+      username,
+      per_page: 10,
+    });
+    return response.data as unknown as GitHubUser[];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
+  }
+}

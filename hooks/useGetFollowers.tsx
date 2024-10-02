@@ -1,24 +1,21 @@
 import { useCallback, useEffect, useState } from "react";
 import { Octokit } from "octokit";
-import {
-  Repository,
-  getRepositories as getGithubRepositories,
-} from "./utils/github";
+import { GitHubUser, getFollowers as getGithubFollowers } from "./utils/github";
 
 const octokit = new Octokit({});
 
-export const useGetRepositories = (username: string | null) => {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+export const useGetFollowers = (username: string | null) => {
+  const [followers, setFollowers] = useState<GitHubUser[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const getRepositories = useCallback(
+  const getFollowers = useCallback(
     async (username: string) => {
       setLoading(true);
       setError(null);
       try {
-        const data = await getGithubRepositories(username);
-        setRepositories(data);
+        const data = await getGithubFollowers(username);
+        setFollowers(data);
       } catch (e: any) {
         setError(e.message);
       } finally {
@@ -28,5 +25,5 @@ export const useGetRepositories = (username: string | null) => {
     [username],
   );
 
-  return { repositories, getRepositories, loading, error };
+  return { followers, getFollowers, loading, error };
 };
