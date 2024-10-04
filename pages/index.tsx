@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import { SearchBar } from "@/components/SearchBar";
 import { UserCard } from "@/components/UserCard";
 import { PaginationSearch } from "@/components/PaginationSearch";
-import { searchUsers } from "@/utils/searchUsers";
+import { searchUsers } from "@/utils/github";
 
 export default function Home() {
   const [query, setQuery] = useState("");
