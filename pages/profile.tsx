@@ -18,7 +18,7 @@ import { useGetFollowers } from "@/hooks/useGetFollowers";
 export default function UserProfile() {
   const router = useRouter();
   const { user, loading, error, getUser } = useGetUser(
-    router.query.user as string
+    router.query.username as string
   );
 
   const { repositories, getRepositories } = useGetRepositories(null);
@@ -26,10 +26,10 @@ export default function UserProfile() {
   const { followers, getFollowers } = useGetFollowers(null);
 
   useEffect(() => {
-    if (router.query.user) {
-      getUser(router.query.user as string);
+    if (router.query.username) {
+      getUser(router.query.username as string);
     }
-  }, [router.query.user]);
+  }, [router.query.username]);
 
   useEffect(() => {
     if (user) {

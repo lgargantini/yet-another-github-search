@@ -35,7 +35,7 @@ export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
   return (
     <Card>
       <Link
-        href={`/${login}`}
+        href={`/profile?username=${login}`}
         sx={{
           color: theme.palette.primary.dark,
           textDecoration: "none",
