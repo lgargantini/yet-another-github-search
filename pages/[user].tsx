@@ -72,7 +72,7 @@ export default function UserProfile() {
             </>
           )}
         </Grid>
-        <Grid container size={12}>
+        <Grid container size={12} spacing={8} sx={{display:"flex"}}>
           <Grid size={{ sm: 6, xs: 12 }}>
             <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
               Repositorios

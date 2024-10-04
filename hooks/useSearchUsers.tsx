@@ -8,7 +8,7 @@ export const useSearchUser = (
   q: string,
   since: number = 0,
   perPage: number = 30,
-  page: number = 1,
+  page: number = 1
 ) => {
   const [users, setUsers] = useState<GitHubUser[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +41,7 @@ export const useSearchUser = (
         setLoading(false);
       }
     },
-    [q, since, perPage, page],
+    [q, since, perPage, page]
   );
 
   return { users, loading, error, searchUsers };

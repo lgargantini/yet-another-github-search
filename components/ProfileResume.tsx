@@ -28,6 +28,7 @@ export const ProfileResume = ({ user }: ProfileResumeProps) => {
           xs: "column",
           sm: "row",
         },
+        width: "100%",
       }}
     >
       <Avatar
@@ -87,7 +88,7 @@ export const ProfileResume = ({ user }: ProfileResumeProps) => {
           />
           {user.location}
         </Typography>
-        <Grid container gap={2} sx={{ mt: theme.spacing(2) }}>
+        <Grid container gap={2} sx={{ mt: theme.spacing(2), }}>
           <Box
             sx={{
               display: "flex",

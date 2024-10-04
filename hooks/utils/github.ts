@@ -25,6 +25,7 @@ export interface GitHubUser {
 
 export interface Repository {
   id: number;
+  name: string;
   full_name: string;
   owner: GitHubUser;
   html_url: string;

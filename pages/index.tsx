@@ -1,17 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import { CircularProgress, Container, Grid2 as Grid } from "@mui/material";
+import { Box, CircularProgress, Container, Grid2 as Grid } from "@mui/material";
 import { useTheme } from "@mui/material";
 import Header from "@/components/Header";
 import { SearchBar } from "@/components/SearchBar";
 import { UserCard } from "@/components/UserCard";
 import { useSearchContext } from "@/context/SearchContext";
 import { useSearchUser } from "@/hooks/useSearchUsers";
+import { PaginationSearch } from "@/components/PaginationSearch";
 
 export default function Home() {
   const theme = useTheme();
   const { query, setQuery, result, setResult } = useSearchContext();
   const { users, loading, error, searchUsers } = useSearchUser(query);
+  const pageSize = 20;
+  const [pagination, setPagination] = useState({
+    count: 0,
+    from: 0,
+    to: pageSize,
+  });
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,6 +30,13 @@ export default function Home() {
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
+  };
+
+  const handlePageChange = (event: any, page: number) => {
+    const from = (page - 1) * pageSize;
+    const to = (page - 1) * pageSize + pageSize;
+
+    setPagination({ ...pagination, from, to });
   };
 
   useEffect(() => {
@@ -51,50 +65,34 @@ export default function Home() {
           </Grid>
 
           {/* Cards de usuarios */}
-          <Grid container rowSpacing={1} size={12}>
-            {/* {result.length === 0 && !loading && (
-              <Grid
-                size={12}
-                sx={{
-                  textAlign: "center",
-                  padding: "1rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <Avatar
-                  alt="User Avatar"
-                  src="https://api.dicebear.com/9.x/pixel-art/svg?seed=sa&eyes=variant02,variant03,variant04,variant05,variant06,variant11,variant09,variant10&mouth=sad10,sad09,sad08,sad07,sad06,sad05,sad04,sad03,sad02,sad01"
-                  variant="square"
+          <Grid container rowSpacing={1} size={12} flexDirection={"column"}>
+            {loading && <CircularProgress />}
+            {result.length > 0 && (
+              <>
+                <Box
                   sx={{
-                    width: theme.spacing(10),
-                    height: theme.spacing(10),
-                  }}
-                />
-                <Typography
-                  variant="h5"
-                  component="h2"
-                  sx={{
-                    padding: "1rem",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "left",
+                    gap: "1rem",
                   }}
                 >
-                  No se encontró ningún usuario
-                </Typography>
-              </Grid>
-            )} */}
-
-            {loading && <CircularProgress />}
-            {result.length > 0 &&
-              result.map((user, index) => (
-                <Grid key={`grid-${index}`} size={{ md: 3, sm: 6, xs: 12 }}>
-                  <UserCard
-                    key={`card-${index}`}
-                    avatarSrc={`${user.avatar_url}`}
-                    login={user.login}
-                  />
-                </Grid>
-              ))}
+                  {result.map((user, index) => (
+                    <Grid key={`grid-${index}`} size={{ md: 3, sm: 6, xs: 12 }}>
+                      <UserCard
+                        key={`card-${index}`}
+                        avatarSrc={`${user.avatar_url}`}
+                        login={user.login}
+                      />
+                    </Grid>
+                  ))}
+                </Box>
+                <PaginationSearch
+                  handlePageChange={handlePageChange}
+                  pagination={{ ...pagination }}
+                />
+              </>
+            )}
           </Grid>
 
           <Grid size={12}>
