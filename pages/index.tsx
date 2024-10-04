@@ -1,47 +1,69 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Box, CircularProgress, Container, Grid2 as Grid } from "@mui/material";
-import { useTheme } from "@mui/material";
 import Header from "@/components/Header";
 import { SearchBar } from "@/components/SearchBar";
 import { UserCard } from "@/components/UserCard";
-import { useSearchContext } from "@/context/SearchContext";
-import { useSearchUser } from "@/hooks/useSearchUsers";
 import { PaginationSearch } from "@/components/PaginationSearch";
+import { searchUsers } from "@/utils/searchUsers";
 
 export default function Home() {
-  const theme = useTheme();
-  const { query, setQuery, result, setResult } = useSearchContext();
-  const { users, loading, error, searchUsers } = useSearchUser(query);
+  const [query, setQuery] = useState("");
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const pageSize = 20;
   const [pagination, setPagination] = useState({
     count: 0,
     from: 0,
     to: pageSize,
+    page: 1,
   });
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setResult([]);
-    console.log("Buscando usuarios...");
-    searchUsers(query);
-    console.log("Usuarios encontrados:", users);
+    setLoading(true);
+    setError(null);
+    try {
+      const { users, count } = await searchUsers(
+        query,
+        pagination.from,
+        pagination.to,
+        pagination.page
+      );
+      setUsers(users);
+      setPagination({ ...pagination, count });
+    } catch (error: any) {
+      setError(error);
+      console.error("Error buscando usuarios:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
 
-  const handlePageChange = (event: any, page: number) => {
+  const handlePageChange = async (event: any, page: number) => {
     const from = (page - 1) * pageSize;
     const to = (page - 1) * pageSize + pageSize;
 
-    setPagination({ ...pagination, from, to });
+    setPagination({ ...pagination, from, to, page });
+    setLoading(true);
+    setError(null);
+    try {
+      const { users, count } = await searchUsers(query, from, to, page);
+      setUsers(users);
+      setPagination({ ...pagination, count });
+      console.log("Usuarios encontrados:", users);
+    } catch (error) {
+      setError(error);
+      console.error("Error buscando usuarios:", error);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  useEffect(() => {
-    setResult(users);
-  }, [users]);
 
   return (
     <>
@@ -67,7 +89,7 @@ export default function Home() {
           {/* Cards de usuarios */}
           <Grid container rowSpacing={1} size={12} flexDirection={"column"}>
             {loading && <CircularProgress />}
-            {result.length > 0 && (
+            {users.length > 0 && (
               <>
                 <Box
                   sx={{
@@ -77,7 +99,7 @@ export default function Home() {
                     gap: "1rem",
                   }}
                 >
-                  {result.map((user, index) => (
+                  {users.map((user, index) => (
                     <Grid key={`grid-${index}`} size={{ md: 3, sm: 6, xs: 12 }}>
                       <UserCard
                         key={`card-${index}`}
@@ -88,7 +110,7 @@ export default function Home() {
                   ))}
                 </Box>
                 <PaginationSearch
-                  handlePageChange={handlePageChange}
+                  onPageChange={handlePageChange}
                   pagination={{ ...pagination }}
                 />
               </>

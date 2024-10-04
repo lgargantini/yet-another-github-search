@@ -1,66 +1,31 @@
-// /api/utils/github.ts
 import { Octokit } from "octokit";
+import { GitHubUser, Repository } from "./types";
 
-const octokit = new Octokit({});
 
-export interface GitHubUser {
-  login: string;
-  id: number;
-  avatar_url: string;
-  html_url: string;
-  followers_url: string;
-  repos_url: string;
-  name: string;
-  company: string;
-  blog: string;
-  location: string;
-  email: string;
-  hireable: boolean;
-  bio: string;
-  twitter_username: string;
-  public_repos: number;
-  followers: number;
-  following: number;
-}
+const octokit = new Octokit({
+  auth: process.env.GITHUB_TOKEN, // Asegúrate de tener un token de GitHub en tus variables de entorno
+});
 
-export interface Repository {
-  id: number;
-  name: string;
-  full_name: string;
-  owner: GitHubUser;
-  html_url: string;
-  description: string | null;
-  url: string;
-  language: string | null;
-  forks_count: number;
-  stargazers_count: number;
-  watchers_count: number;
-  size: number;
-  pushed_at: string | null;
-  forks: number;
-  watchers: number;
-}
-
-export const searchUsers = async (q: string,
-  since: number = 0,
-  perPage: number = 30,
-  page: number = 1) => {
+export async function searchUsers(query: string, from: number, to: number, page: number) {
   try {
-    const response = await octokit.rest.search.users({ q, per_page: perPage, page });
-    return response.data.items;
+    const response = await octokit.rest.search.users({
+      q: query,
+      per_page: to - from,
+      page: page,
+    });
+    const users = response.data.items as unknown as GitHubUser[];
+    const count = response.data.total_count as number;
+    return { users, count };
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    } else {
-      throw new Error("An unknown error occurred");
-    }
+    console.error("Error buscando usuarios:", error);
+    throw error;
   }
-};
+}
 
 export const getUser = async (username: string) => {
   try {
     const response = await octokit.rest.users.getByUsername({ username });
-    return response.data;
+    return response.data as unknown as GitHubUser;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);

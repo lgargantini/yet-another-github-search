@@ -1,8 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Octokit } from "octokit";
+import { useCallback, useState } from "react";
 import { GitHubUser, getFollowers as getGithubFollowers } from "./utils/github";
-
-const octokit = new Octokit({});
 
 export const useGetFollowers = (username: string | null) => {
   const [followers, setFollowers] = useState<GitHubUser[]>([]);
@@ -22,7 +19,7 @@ export const useGetFollowers = (username: string | null) => {
         setLoading(false);
       }
     },
-    [username],
+    [username]
   );
 
   return { followers, getFollowers, loading, error };

@@ -1,11 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { Octokit } from "octokit";
 import {
   Repository,
   getRepositories as getGithubRepositories,
 } from "./utils/github";
-
-const octokit = new Octokit({});
 
 export const useGetRepositories = (username: string | null) => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
@@ -25,7 +22,7 @@ export const useGetRepositories = (username: string | null) => {
         setLoading(false);
       }
     },
-    [username],
+    [username]
   );
 
   return { repositories, getRepositories, loading, error };
