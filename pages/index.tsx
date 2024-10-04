@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Head from "next/head";
 import { Box, CircularProgress, Container, Grid2 as Grid } from "@mui/material";
 import Header from "@/components/Header";
@@ -21,52 +21,57 @@ export default function Home() {
     page: 1,
   });
 
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      const { users, count } = await searchUsers(
-        query,
-        pagination.from,
-        pagination.to,
-        pagination.page
-      );
-      setUsers(users);
-      setPagination({ ...pagination, count });
-    } catch (error: any) {
-      setError(error);
-      console.error("Error buscando usuarios:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setLoading(true);
+      setError(null);
+      try {
+        const { users, count } = await searchUsers(
+          query,
+          pagination.from,
+          pagination.to,
+          pagination.page
+        );
+        setUsers(users);
+        setPagination((prev) => ({ ...prev, count }));
+      } catch (error: any) {
+        setError(error);
+        console.error("Error buscando usuarios:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [query, pagination]
+  );
 
-  const onChangeInput = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setQuery(e.target.value);
-  };
+  const onChangeInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setQuery(e.target.value);
+    },
+    []
+  );
 
-  const handlePageChange = async (event: any, page: number) => {
-    const from = (page - 1) * pageSize;
-    const to = (page - 1) * pageSize + pageSize;
-
-    setPagination({ ...pagination, from, to, page });
-    setLoading(true);
-    setError(null);
-    try {
-      const { users, count } = await searchUsers(query, from, to, page);
-      setUsers(users);
-      setPagination({ ...pagination, count });
-      console.log("Usuarios encontrados:", users);
-    } catch (error: any) {
-      setError(error);
-      console.error("Error buscando usuarios:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handlePageChange = useCallback(
+    async (event: any, page: number) => {
+      const from = (page - 1) * pageSize;
+      const to = (page - 1) * pageSize + pageSize;
+      setPagination((prev) => ({ ...prev, from, to, page }));
+      setLoading(true);
+      setError(null);
+      try {
+        const { users, count } = await searchUsers(query, from, to, page);
+        setUsers(users);
+        setPagination((prev) => ({ ...prev, count }));
+      } catch (error: any) {
+        setError(error);
+        console.error("Error cambiando de página:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [query]
+  );
 
   return (
     <>
@@ -129,7 +134,8 @@ export default function Home() {
             size={12}
             sx={{
               textAlign: "center",
-              bottom: 0,
+              justifyContent: "center",
+              padding: "1rem",
             }}
           >
             <footer>Santiago Barchetta - MIT License - 2024</footer>

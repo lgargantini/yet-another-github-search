@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid2 as Grid,
   Avatar,
@@ -6,11 +6,17 @@ import {
   Typography,
   Link,
   useTheme,
+  IconButton,
 } from "@mui/material";
-import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 
-import { GitHubUser } from "../hooks/utils/github";
+import {
+  BadgeOutlined as BadgeOutlinedIcon,
+  LocationOnOutlined as LocationOnOutlinedIcon,
+  Link as LinkIcon,
+  Star as StarIcon,
+  StarBorder as StarBorderIcon,
+} from "@mui/icons-material";
+import { GitHubUser } from "../utils/types";
 
 interface ProfileResumeProps {
   user: GitHubUser;
@@ -18,6 +24,20 @@ interface ProfileResumeProps {
 
 export const ProfileResume = ({ user }: ProfileResumeProps) => {
   const theme = useTheme();
+
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "{}");
+    setIsFavorite(favorites[user.login] || false);
+  }, [user.login]);
+
+  const handleFavoriteClick = () => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "{}");
+    favorites[user.login] = !isFavorite;
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    setIsFavorite(!isFavorite);
+  };
 
   return (
     <Grid
@@ -51,44 +71,101 @@ export const ProfileResume = ({ user }: ProfileResumeProps) => {
           flexDirection: "column",
         }}
       >
-        <Typography component="span" sx={{ marginRight: "1rem" }} variant="h5">
-          {user.name}
-        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <Typography
+            component="span"
+            sx={{ marginRight: "1rem" }}
+            variant="h5"
+            gap={4}
+          >
+            {user.name}
+          </Typography>
+          <IconButton
+            onClick={handleFavoriteClick}
+            sx={{
+              alignSelf: "center",
+              padding: theme.spacing(1),
+              verticalAlign: "middle",
+            }}
+          >
+            {isFavorite ? <StarIcon color="primary" /> : <StarBorderIcon />}
+          </IconButton>
+        </Box>
+
         <Link component="span">@{user.login}</Link>
         <Typography sx={{ padding: "1em 0" }}>{user.bio}</Typography>
-        <Typography
-          sx={{
-            display: "flex",
-            justifyItems: "center",
-            fontSize: 14,
-          }}
-        >
-          <BadgeOutlinedIcon
+        {user.company && (
+          <Typography
             sx={{
-              fontSize: 18,
-              marginRight: "0.5rem",
-              alignSelf: "center",
+              display: "flex",
+              justifyItems: "center",
+              fontSize: 14,
             }}
-          />
-          {user.company}
-        </Typography>
-        <Typography
-          sx={{
-            display: "flex",
-            justifyItems: "center",
-            fontSize: 14,
-          }}
-        >
-          <LocationOnOutlinedIcon
+          >
+            <BadgeOutlinedIcon
+              sx={{
+                fontSize: 18,
+                marginRight: "0.5rem",
+                alignSelf: "center",
+              }}
+            />
+            {user.company}
+          </Typography>
+        )}
+        {user.location && (
+          <Typography
             sx={{
-              fontSize: 18,
-              marginRight: "0.5rem",
-              alignSelf: "center",
+              display: "flex",
+              justifyItems: "center",
+              fontSize: 14,
             }}
-          />
-          {user.location}
-        </Typography>
-        <Grid container gap={2} sx={{ mt: theme.spacing(2), }}>
+          >
+            <LocationOnOutlinedIcon
+              sx={{
+                fontSize: 18,
+                marginRight: "0.5rem",
+                alignSelf: "center",
+              }}
+            />
+            {user.location}
+          </Typography>
+        )}
+
+        {user.blog && (
+          <Typography
+            sx={{
+              display: "flex",
+              justifyItems: "center",
+              fontSize: 14,
+            }}
+          >
+            <LinkIcon
+              sx={{
+                fontSize: 18,
+                marginRight: "0.5rem",
+                alignSelf: "center",
+              }}
+            />
+            <Link
+              href={user.blog}
+              sx={{
+                color: theme.palette.primary.dark,
+                textDecoration: "none",
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              }}
+            >
+              {user.blog}
+            </Link>
+          </Typography>
+        )}
+        <Grid container gap={2} sx={{ mt: theme.spacing(2) }}>
           <Box
             sx={{
               display: "flex",

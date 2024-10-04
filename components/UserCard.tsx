@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import theme from "@/styles/terminal-glow-theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface UserCardProps {
   avatarSrc: string;
@@ -17,15 +17,23 @@ export interface UserCardProps {
 }
 
 export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
-  const handleFavoriteClick = (e: { preventDefault: () => void }) => {
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "{}");
+    setIsFavorite(favorites[login] || false);
+  }, [login]);
+
+  const handleFavoriteClick = (e: any) => {
     e.preventDefault();
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "{}");
+    favorites[login] = !isFavorite;
+    localStorage.setItem("favorites", JSON.stringify(favorites));
     setIsFavorite(!isFavorite);
   };
 
   return (
-    <Card sx={{}}>
+    <Card>
       <Link
         href={`/${login}`}
         sx={{
@@ -38,7 +46,7 @@ export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
           fontSize: "1.2rem",
         }}
       >
-        <Box sx={{}}>
+        <Box>
           <CardContent
             sx={{
               display: "flex",
@@ -59,7 +67,7 @@ export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
             <Typography
               component="div"
               variant="h5"
-              sx={{ fontSize: "1.1rem" }}
+              sx={{ fontSize: "1.2rem", width: "100%", pl: 2 }}
             >
               {login}
             </Typography>

@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { GitHubUser, getFollowers as getGithubFollowers } from "./utils/github";
+import { getFollowers as getGithubFollowers } from "../utils/github";
+import { GitHubUser } from "../utils/types";
 
 export const useGetFollowers = (username: string | null) => {
   const [followers, setFollowers] = useState<GitHubUser[]>([]);

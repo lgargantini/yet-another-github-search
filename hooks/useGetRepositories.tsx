@@ -1,8 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
-import {
-  Repository,
-  getRepositories as getGithubRepositories,
-} from "./utils/github";
+import { useCallback, useState } from "react";
+import { getRepositories as getGithubRepositories } from "../utils/github";
+import { Repository } from "../utils/types";
 
 export const useGetRepositories = (username: string | null) => {
   const [repositories, setRepositories] = useState<Repository[]>([]);

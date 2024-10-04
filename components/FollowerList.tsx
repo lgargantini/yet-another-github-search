@@ -2,7 +2,7 @@
 // El componente recibe un listado de GitHubUser y los muestra en una lista stackeada
 
 import { Stack } from "@mui/material";
-import { GitHubUser } from "../hooks/utils/github";
+import { GitHubUser } from "../utils/types";
 import { UserCard } from "./UserCard";
 
 interface FollowerListProps {
@@ -10,7 +10,12 @@ interface FollowerListProps {
 }
 
 export const FollowerList = ({ followers }: FollowerListProps) => (
-  <Stack gap={2}>
+  <Stack
+    gap={2}
+    sx={{
+      width: { sx: "100%", sm: "50%" },
+    }}
+  >
     {followers.map((follower) => (
       <UserCard
         key={follower.id}

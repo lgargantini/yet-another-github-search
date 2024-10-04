@@ -1,8 +1,6 @@
-import { Octokit } from "octokit";
 import { useState, useCallback } from "react";
-import { GitHubUser, getUser } from "./utils/github";
-
-const octokit = new Octokit({});
+import { getUser as getGithubUser } from "../utils/github";
+import { GitHubUser } from "../utils/types";
 
 export const useGetUser = (username: string) => {
   const [user, setUser] = useState<GitHubUser>();
@@ -14,17 +12,7 @@ export const useGetUser = (username: string) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await octokit.request(`GET /users/${username}`, {
-          username,
-        });
-
-        console.log("user", response.data);
-
-        if (response.status !== 200) {
-          throw new Error("Error fetching user");
-        }
-
-        const data: GitHubUser = response.data;
+        const data: GitHubUser = await getGithubUser(username);
         setUser(data);
       } catch (e: any) {
         setError(e.message);
@@ -32,7 +20,7 @@ export const useGetUser = (username: string) => {
         setLoading(false);
       }
     },
-    [username],
+    [username]
   );
 
   return { user, getUser, loading, error };

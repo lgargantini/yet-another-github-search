@@ -7,7 +7,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useTheme } from "@mui/material";
 import Header from "@/components/Header";
 import { ProfileResume } from "@/components/ProfileResume";
 import { useGetUser } from "@/hooks/useGetUser";
@@ -22,19 +21,9 @@ export default function UserProfile() {
     router.query.user as string
   );
 
-  const {
-    repositories,
-    loading: loadingRepos,
-    error: errorRepos,
-    getRepositories,
-  } = useGetRepositories(null);
+  const { repositories, getRepositories } = useGetRepositories(null);
 
-  const {
-    followers,
-    loading: loadingFollowers,
-    error: errorFollowers,
-    getFollowers,
-  } = useGetFollowers(null);
+  const { followers, getFollowers } = useGetFollowers(null);
 
   useEffect(() => {
     if (router.query.user) {
@@ -93,7 +82,9 @@ export default function UserProfile() {
         <Grid
           size={12}
           sx={{
-            display: "flex",
+            textAlign: "center",
+            justifyContent: "center",
+            padding: "1rem",
           }}
         >
           <footer>Santiago Barchetta - MIT License - 2024</footer>
