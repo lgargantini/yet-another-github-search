@@ -1,79 +1,147 @@
+import React, { useCallback, useState } from "react";
 import Head from "next/head";
-import styles from "@/styles/Home.module.css";
-
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid2';
-
+import { Box, CircularProgress, Container, Grid2 as Grid } from "@mui/material";
+import Header from "@/components/Header";
+import { SearchBar } from "@/components/SearchBar";
+import { UserCard } from "@/components/UserCard";
+import { PaginationSearch } from "@/components/PaginationSearch";
+import { searchUsers } from "@/utils/github";
+import { GitHubUser } from "@/utils/types";
 
 export default function Home() {
+  const [query, setQuery] = useState("");
+  const [users, setUsers] = useState<GitHubUser[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const pageSize = 20;
+  const [pagination, setPagination] = useState({
+    count: 0,
+    from: 0,
+    to: pageSize,
+    page: 1,
+  });
+
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setLoading(true);
+      setError(null);
+      try {
+        const { users, count } = await searchUsers(
+          query,
+          pagination.from,
+          pagination.to,
+          pagination.page
+        );
+        setUsers(users);
+        setPagination((prev) => ({ ...prev, count }));
+      } catch (error: any) {
+        setError(error);
+        console.error("Error buscando usuarios:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [query, pagination]
+  );
+
+  const onChangeInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setQuery(e.target.value);
+    },
+    []
+  );
+
+  const handlePageChange = useCallback(
+    async (event: any, page: number) => {
+      const from = (page - 1) * pageSize;
+      const to = (page - 1) * pageSize + pageSize;
+      setPagination((prev) => ({ ...prev, from, to, page }));
+      setLoading(true);
+      setError(null);
+      try {
+        const { users, count } = await searchUsers(query, from, to, page);
+        setUsers(users);
+        setPagination((prev) => ({ ...prev, count }));
+      } catch (error: any) {
+        setError(error);
+        console.error("Error cambiando de página:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [query]
+  );
+
   return (
     <>
       <Head>
-        <title>yet another github user search</title>
+        <title>Yet Another Github User Search</title>
         <meta name="description" content="yet another github user search" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div
-        className={`${styles.page}`}
-      >
-        <main>
-          <h1>/// yet another github user search ///</h1>
-          <Box sx={{ flexGrow: 1, p: 2 }}>
+
+      <Container maxWidth="lg">
+        <Header />
+
+        {/* Contenedor */}
+        <Grid container spacing={4} size={12} sx={{ padding: "1rem" }}>
+          {/* Buscador */}
+          <Grid size={12} sx={{ textAlign: "center", padding: "1rem" }}>
+            <SearchBar
+              onSubmit={(e) => onSubmit(e)}
+              onChangeInput={(e) => onChangeInput(e)}
+            />
+          </Grid>
+
+          {/* Cards de usuarios */}
           <Grid
             container
+            rowSpacing={1}
+            size={12}
+            flexDirection={"column"}
+            sx={{ minHeight: "20rem", justifyContent: "space-around" }}
+          >
+            {loading && <CircularProgress />}
+            {users.length > 0 && !loading && (
+              <>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "left",
+                    gap: "1rem",
+                  }}
+                >
+                  {users.map((user, index) => (
+                    <Grid key={`grid-${index}`} size={{ md: 4, sm: 6, xs: 12 }}>
+                      <UserCard
+                        key={`card-${index}`}
+                        avatarSrc={`${user.avatar_url}`}
+                        login={user.login}
+                      />
+                    </Grid>
+                  ))}
+                </Box>
+              </>
+            )}
+            <PaginationSearch
+              onPageChange={handlePageChange}
+              pagination={{ ...pagination }}
+            />
+          </Grid>
+          <Grid
+            size={12}
             sx={{
-              '--Grid-borderWidth': '2px',
-              borderTop: 'var(--Grid-borderWidth) solid',
-              borderLeft: 'var(--Grid-borderWidth) solid',
-              borderColor: 'divider',
-              '& > div': {
-                borderRight: 'var(--Grid-borderWidth) solid',
-                borderBottom: 'var(--Grid-borderWidth) solid',
-                borderColor: 'divider',
-              },
+              textAlign: "center",
+              justifyContent: "center",
+              padding: "1rem",
             }}
           >
-            {[...Array(6)].map((_, index) => (
-              <Grid
-                key={index}
-                minHeight={160}
-                size={{
-                  xs: 12,
-                  sm: 6,
-                  md: 4,
-                  lg: 3,
-                }}
-              />
-            ))}
+            <footer>Santiago Barchetta - MIT License - 2024</footer>
           </Grid>
-        </Box>
-          
-          <p>Search for a user</p>
-          <input type="text" />
-          <button>Search</button>
-
-          <p>Results</p>
-          <ul>
-            <li>card user 1</li>
-            <li>card user 2</li>
-            <li>card user 3</li>
-          </ul>
-
-        </main>
-        
-        <aside>
-          Favoritos
-          <ul>
-            <li>user 1</li>
-            <li>user 2</li>
-            <li>user 3</li>
-          </ul>
-        </aside>
-        <footer>
-          Credenciales
-        </footer>
-      </div>
+        </Grid>
+      </Container>
     </>
   );
 }

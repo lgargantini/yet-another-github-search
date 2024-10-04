@@ -1,0 +1,7 @@
+:root {
+  --color-radiant-hulk: #10f144;
+  --color-1: #f10ebc;
+  --color-sun-flooded-woods: #d1d416;
+  --color-badab-black-wash: #0c0c04;
+  --color-heather-grey: #9c9da4;
+}

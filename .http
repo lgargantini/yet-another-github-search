@@ -1,0 +1,9 @@
+GET https://api.github.com/users?sort=followers&order=desc
+
+####
+
+GET https://api.github.com/search/users?q={dudesl}
+
+
+###
+GET  https://api.github.com/users/dudesl

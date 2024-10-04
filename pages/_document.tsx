@@ -1,18 +1,23 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "@/styles/theme";
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      />
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
       </Head>
-      <body>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Main />
-        <NextScript />
-      </body>
+      </ThemeProvider>
+      <NextScript />
     </Html>
   );
 }
