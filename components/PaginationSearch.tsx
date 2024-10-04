@@ -10,16 +10,6 @@ export const PaginationSearch = ({
   onPageChange,
   pagination,
 }: PaginationSearchProps) => {
-  useEffect(() => {
-    console.log(
-      "Paginando desde",
-      pagination.from,
-      "hasta",
-      pagination.to,
-      pagination.count
-    );
-  }, [pagination.to, pagination.from]);
-
   return (
     <Box
       justifyContent={"center"}

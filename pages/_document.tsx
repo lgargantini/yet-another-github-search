@@ -1,7 +1,7 @@
 import { Html, Head, Main, NextScript } from "next/document";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "@/styles/terminal-glow-theme";
+import theme from "@/styles/theme";
 
 export default function Document() {
   return (

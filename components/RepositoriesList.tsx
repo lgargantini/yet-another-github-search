@@ -11,7 +11,7 @@ import "dayjs/locale/es";
 dayjs.extend(relativeTime);
 dayjs.locale("es");
 
-import theme from "@/styles/terminal-glow-theme";
+import theme from "@/styles/theme";
 
 interface RepositoriesListProps {
   repositories: Repository[];

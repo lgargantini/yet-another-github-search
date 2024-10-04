@@ -8,7 +8,7 @@ import {
   Link,
   IconButton,
 } from "@mui/material";
-import theme from "@/styles/terminal-glow-theme";
+import theme from "@/styles/theme";
 import { useEffect, useState } from "react";
 
 export interface UserCardProps {
