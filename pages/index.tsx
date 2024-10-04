@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import { Box, CircularProgress, Container, Grid2 as Grid } from "@mui/material";
 import Header from "@/components/Header";
@@ -6,10 +6,11 @@ import { SearchBar } from "@/components/SearchBar";
 import { UserCard } from "@/components/UserCard";
 import { PaginationSearch } from "@/components/PaginationSearch";
 import { searchUsers } from "@/utils/github";
+import { GitHubUser } from "@/utils/types";
 
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<GitHubUser[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const pageSize = 20;
@@ -41,7 +42,9 @@ export default function Home() {
     }
   };
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeInput = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setQuery(e.target.value);
   };
 
@@ -57,7 +60,7 @@ export default function Home() {
       setUsers(users);
       setPagination({ ...pagination, count });
       console.log("Usuarios encontrados:", users);
-    } catch (error) {
+    } catch (error: any) {
       setError(error);
       console.error("Error buscando usuarios:", error);
     } finally {
@@ -68,7 +71,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>yet another github user search</title>
+        <title>Yet Another Github User Search</title>
         <meta name="description" content="yet another github user search" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
@@ -87,9 +90,15 @@ export default function Home() {
           </Grid>
 
           {/* Cards de usuarios */}
-          <Grid container rowSpacing={1} size={12} flexDirection={"column"}>
+          <Grid
+            container
+            rowSpacing={1}
+            size={12}
+            flexDirection={"column"}
+            sx={{ minHeight: "20rem", justifyContent: "space-around" }}
+          >
             {loading && <CircularProgress />}
-            {users.length > 0 && (
+            {users.length > 0 && !loading && (
               <>
                 <Box
                   sx={{
@@ -100,7 +109,7 @@ export default function Home() {
                   }}
                 >
                   {users.map((user, index) => (
-                    <Grid key={`grid-${index}`} size={{ md: 3, sm: 6, xs: 12 }}>
+                    <Grid key={`grid-${index}`} size={{ md: 4, sm: 6, xs: 12 }}>
                       <UserCard
                         key={`card-${index}`}
                         avatarSrc={`${user.avatar_url}`}
@@ -109,15 +118,20 @@ export default function Home() {
                     </Grid>
                   ))}
                 </Box>
-                <PaginationSearch
-                  onPageChange={handlePageChange}
-                  pagination={{ ...pagination }}
-                />
               </>
             )}
+            <PaginationSearch
+              onPageChange={handlePageChange}
+              pagination={{ ...pagination }}
+            />
           </Grid>
-
-          <Grid size={12}>
+          <Grid
+            size={12}
+            sx={{
+              textAlign: "center",
+              bottom: 0,
+            }}
+          >
             <footer>Santiago Barchetta - MIT License - 2024</footer>
           </Grid>
         </Grid>

@@ -1,3 +1,4 @@
+import { Star, StarBorder } from "@mui/icons-material";
 import {
   Card,
   Box,
@@ -5,8 +6,10 @@ import {
   Typography,
   Avatar,
   Link,
+  IconButton,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import theme from "@/styles/terminal-glow-theme";
+import { useState } from "react";
 
 export interface UserCardProps {
   avatarSrc: string;
@@ -14,7 +17,13 @@ export interface UserCardProps {
 }
 
 export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
-  const theme = useTheme();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleFavoriteClick = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    setIsFavorite(!isFavorite);
+  };
+
   return (
     <Card sx={{}}>
       <Link
@@ -23,7 +32,7 @@ export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
           color: theme.palette.primary.dark,
           textDecoration: "none",
           "&:hover": {
-            textDecoration: "none",
+            textDecoration: "underline",
           },
           width: "100%",
           fontSize: "1.2rem",
@@ -35,7 +44,7 @@ export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
-              alignContent: "center",
+              justifyContent: "space-between",
             }}
           >
             <Avatar
@@ -47,9 +56,24 @@ export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
                 height: theme.spacing(10),
               }}
             />
-            <Typography component="div" variant="h5">
+            <Typography
+              component="div"
+              variant="h5"
+              sx={{ fontSize: "1.1rem" }}
+            >
               {login}
             </Typography>
+            <IconButton
+              onClick={handleFavoriteClick}
+              sx={{
+                alignSelf: "flex-start",
+                right: 0,
+                top: 0,
+                padding: theme.spacing(1),
+              }}
+            >
+              {isFavorite ? <Star color="primary" /> : <StarBorder />}
+            </IconButton>
           </CardContent>
         </Box>
       </Link>

@@ -19,7 +19,7 @@ import { useGetFollowers } from "@/hooks/useGetFollowers";
 export default function UserProfile() {
   const router = useRouter();
   const { user, loading, error, getUser } = useGetUser(
-    router.query.user as string,
+    router.query.user as string
   );
 
   const {
@@ -52,7 +52,7 @@ export default function UserProfile() {
   return (
     <>
       <Head>
-        <title>{`yet another github user search - ${user?.login}`}</title>
+        <title>{`YAGUS - ${user?.login}`}</title>
         <meta
           name="description"
           content={`Perfil de usuario de ${user?.login}`}
@@ -72,7 +72,7 @@ export default function UserProfile() {
             </>
           )}
         </Grid>
-        <Grid container size={12} spacing={8} sx={{display:"flex"}}>
+        <Grid container size={12} spacing={8} sx={{ display: "flex" }}>
           <Grid size={{ sm: 6, xs: 12 }}>
             <Typography variant="h5" sx={{ marginBottom: "1rem" }}>
               Repositorios
