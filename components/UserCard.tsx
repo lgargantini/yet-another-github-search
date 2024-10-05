@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import theme from "@/styles/theme";
 import { useEffect, useState } from "react";
+import { MouseEvent as ReactMouseEvent } from "react";
+import { useRouter } from "next/router";
 
 export interface UserCardProps {
   avatarSrc: string;
@@ -17,6 +19,7 @@ export interface UserCardProps {
 }
 
 export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
+  const router = useRouter();
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,6 +35,11 @@ export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
     setIsFavorite(!isFavorite);
   };
 
+  const handleNavigation = (e: any, profileId: string) => {
+    e.preventDefault();
+    router.push(`/profile?username=${profileId}`);
+  };
+
   return (
     <Card>
       <Link
@@ -45,6 +53,7 @@ export const UserCard = ({ avatarSrc, login }: UserCardProps) => {
           width: "100%",
           fontSize: "1.2rem",
         }}
+        onClick={(e) => handleNavigation(e, login)}
       >
         <Box>
           <CardContent
