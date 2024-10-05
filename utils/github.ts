@@ -3,7 +3,7 @@ import { GitHubUser, Repository } from "./types";
 
 
 const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN, // Asegúrate de tener un token de GitHub en tus variables de entorno
+  auth: process.env.NEXT_PUBLIC_GITHUB_TOKEN, 
 });
 
 export async function searchUsers(query: string, from: number, to: number, page: number) {
